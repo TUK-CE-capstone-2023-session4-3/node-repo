@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /CAPNODE
+WORKDIR /capNode
 
 RUN yarn
 
@@ -11,3 +11,5 @@ COPY package*.json ./
 EXPOSE 8080
 
 CMD [ "node", "sms.cjs" ]
+
+
