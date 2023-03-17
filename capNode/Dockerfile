@@ -1,12 +1,12 @@
-FROM node:16
+FROM node:18-alphine
 
 WORKDIR /capNode
-
-RUN yarn
 
 COPY . .
 
 COPY package*.json ./
+
+RUN yarn
 
 EXPOSE 8080
 
