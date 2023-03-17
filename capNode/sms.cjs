@@ -43,13 +43,14 @@
 //   }
 // };
 
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const coolsms = require("coolsms-node-sdk").default;
 const messageService = new coolsms(
-  "NCS2NIHLVX9VGWT1",
-  "G1SJYU3AVDJVH57XZMPO4HOBBPJTJB1V"
+  process.env.API_KEY,
+  process.env.API_SECRET_KEY
 );
 // import express from "express";
 // import path from "path";
@@ -57,21 +58,19 @@ const messageService = new coolsms(
 const app = express();
 
 const server = require("http").createServer(app);
-// import server from "http";
-// server = server.createServer(app);
 
 app.use(cors()); // cors 미들웨어를 삽입합니다.
 
 app.get("/", (req, res) => {
-  // 요청패스에 대한 콜백함수를 넣어줍니다.
+  //요청패스에 대한 콜백함수를 넣어줍니다.
   res.send({ message: "runningnode" });
   messageService
     .sendOne({
-      to: "01034666927",
-      from: "01034666927",
+      to: process.env.PHONE_TO,
+      from: process.env.PHONE_FROM,
       text: "담배피고올께",
     })
-    .then((res) => console.log(res));
+    .then((res) => console.log("sucess"));
 });
 
 server.listen(8080, () => {
