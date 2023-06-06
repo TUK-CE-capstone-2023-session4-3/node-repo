@@ -63,16 +63,36 @@ app.use(cors()); // cors 미들웨어를 삽입합니다.
 
 app.get("/", (req, res) => {
   //요청패스에 대한 콜백함수를 넣어줍니다.
-  res.send({ message: "runningnode" });
-  messageService
-    .sendOne({
-      to: process.env.PHONE_TO,
-      from: process.env.PHONE_FROM,
-      text: "담배피고올께",
-    })
-    .then((res) => console.log("sucess"));
+  res.send({ message: "running node" });
+  //여러 메시지 발송 예제, 한 번 호출 당 최대 10,000건 까지 발송 가능
+  // messageService
+  //   .sendMany([
+  //     // {
+  //     //   to: process.env.PHONE_TO,
+  //     //   from: process.env.PHONE_FROM,
+  //     //   text: "응급상황입니다 여기에 사람이 쓰러져있어요!",
+  //     // },
+  //     {
+  //       to: req.query.To,
+  //       from: req.query.From,
+  //       text: req.query.Text,
+  //     },
+  //     // 2번째 파라미터 항목인 allowDuplicates 옵션을 true로 설정할 경우 중복 수신번호를 허용합니다.
+  //   ])
+  //    .then((res) => console.log(res));
 });
 
+app.get("/messages", (req, res) => {
+  messageService.getMessages({ limit: 10 }).then((response) => {
+    res.json({ messages: response });
+  });
+});
+
+app.get("/balance", (req, res) => {
+  messageService.getBalance().then((response) => {
+    res.json({ balance: response.balance });
+  });
+});
 server.listen(8080, () => {
   console.log("server is running on 8080");
 });
