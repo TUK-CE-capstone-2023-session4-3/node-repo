@@ -47,6 +47,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+
 const coolsms = require("coolsms-node-sdk").default;
 const messageService = new coolsms(
   process.env.API_KEY,
@@ -63,24 +64,73 @@ app.use(cors()); // cors 미들웨어를 삽입합니다.
 
 app.get("/", (req, res) => {
   //요청패스에 대한 콜백함수를 넣어줍니다.
-  res.send({ message: "running node" });
-  //여러 메시지 발송 예제, 한 번 호출 당 최대 10,000건 까지 발송 가능
+  // res.send({ message: "running node" });
+  // switch (req.query.Id) {
+  //   case 1:
+  //     console.log("1");
+  //     messageService
+  //       .sendOne({
+  //         to: process.env.PHONE_TO,
+  //         from: process.env.PHONE_FROM,
+  //         text: "소방차가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+  //       })
+  //       .then((res) => console.log(res));
+  //     break;
+  //   case 2:
+  //     console.log("2");
+  //     messageService
+  //       .sendOne({
+  //         to: process.env.PHONE_TO,
+  //         from: process.env.PHONE_FROM,
+  //         text: "응급가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+  //       })
+  //       .then((res) => console.log(res));
+  //     break;
+  //   case 3:
+  //     console.log("3");
+  //     messageService
+  //       .sendOne({
+  //         to: process.env.PHONE_TO,
+  //         from: process.env.PHONE_FROM,
+  //         text: "경찰가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+  //       })
+  //       .then((res) => console.log(res));
+  //     break;
+  // }
+  if (req.query.Id == "1") {
+    messageService
+      .sendOne({
+        to: process.env.PHONE_TO,
+        from: process.env.PHONE_FROM,
+        text: "응급차가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+      })
+      .then((res) => console.log(res));
+  } else if (req.query.Id == "2") {
+    messageService
+      .sendOne({
+        to: process.env.PHONE_TO,
+        from: process.env.PHONE_FROM,
+        text: "경찰이 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+      })
+      .then((res) => console.log(res));
+  } else if (req.query.Id == "3") {
+    messageService
+      .sendOne({
+        to: process.env.PHONE_TO,
+        from: process.env.PHONE_FROM,
+        text: "관리자가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+      })
+      .then((res) => console.log(res));
+  }
   // messageService
-  //   .sendMany([
-  //     // {
-  //     //   to: process.env.PHONE_TO,
-  //     //   from: process.env.PHONE_FROM,
-  //     //   text: "응급상황입니다 여기에 사람이 쓰러져있어요!",
-  //     // },
-  //     {
-  //       to: req.query.To,
-  //       from: req.query.From,
-  //       text: req.query.Text,
-  //     },
-  //     // 2번째 파라미터 항목인 allowDuplicates 옵션을 true로 설정할 경우 중복 수신번호를 허용합니다.
-  //   ])
-  //    .then((res) => console.log(res));
+  //   .sendOne({
+  //     to: process.env.PHONE_TO,
+  //     from: process.env.PHONE_FROM,
+  //     text: "경찰가 필요해요 응급상황입니다 여기에 사람이 쓰러져있어요!",
+  //   })
+  //   .then((res) => console.log(res));
 });
+//여러 메시지 발송 예제, 한 번 호출 당 최대 10,000건 까지 발송 가
 
 app.get("/messages", (req, res) => {
   messageService.getMessages({ limit: 10 }).then((response) => {
